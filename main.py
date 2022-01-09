@@ -1,8 +1,9 @@
-import serial
 import time
 import pygame
 import sys
 import csv
+
+from arduino_connection import waitForArduinoConnection
 
 # Setup pygame
 pygame.init()
@@ -16,28 +17,29 @@ for row in csv.reader(open("./sounds.csv")):
     soundsConfiguration[row[0]] = pygame.mixer.Sound("sounds/" + row[1])
 print(soundsConfiguration)
 
-# Setup USB connection
-inputUSB = serial.Serial(port='COM3', baudrate=115200, timeout=.1)
-inputUSB.flush()
+# Setup Arduino connection
+print("Waiting for Arduino connection...")
+arduinoConnection = waitForArduinoConnection()
+arduinoConnection.flush()
 
 while True:
 
     # Read USB input
-    lines = inputUSB.readlines()
+    lines = arduinoConnection.readlines()
     for line in lines:
         try:
             data = line.decode().strip().split(":")
             print(data)
 
             sensor = data[0]
-            value = data[1]
+            value = int(data[1])
 
-            soundsConfiguration[sensor].set_volume(0.1)
-            soundsConfiguration[sensor].play()
+            if value > 0:
+                soundsConfiguration[sensor].set_volume(0.1)
+                soundsConfiguration[sensor].play()
 
         except:
-            print("Input Error:")
-            print(data)
+            print(f"Input Error: {data}")
 
     # Read pygame events
     for event in pygame.event.get():
