@@ -18,7 +18,7 @@ void loop()
   {
     int value = analogRead(sensors[i]);
 
-    if(value > 5) //Threshold
+    if(value > 0)
     {
       Serial.println("A"+ String(i) + ":" + String(value));
     }
