@@ -33,3 +33,6 @@ If you're not familiar with Git, download the source code [[Zip Download]](https
   - Type `pip install -r requirements.txt` and press enter
 - Start the E-Drum application
   - Type `python main.py` and press enter
+- The next time you open the terminal to use the e-drums:
+   - Type `cd <path-to-your-dowload-folder>` (Example `cd C://projects/selfmade-edrum`) and press enter
+   - Type `python main.py` and press enter
